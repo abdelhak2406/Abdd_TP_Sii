@@ -1,0 +1,15 @@
+.DS_Store
+.idea
+*.log
+tmp/
+:old.age
+GYMNASE_TBS.dat
+GYMNASE
+GYMNASE_TempTBS.dat
+temp_abd.dat
+*pics/
+*pictures
+TP_devoir1/.git/
+*.png
+*.dat
+TP_devoir1/

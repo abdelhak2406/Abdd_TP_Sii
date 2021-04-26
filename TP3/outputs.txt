@@ -1,0 +1,8 @@
+SQL> ALTER TABLE GYMNASES
+  2  ADD DATECREATION date;
+
+Table altered.
+
+SQL> spool
+currently spooling to /home/goku/Code/SII/Abdd/TP3/outputs.txt
+SQL> spool off

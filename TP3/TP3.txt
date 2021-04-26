@@ -1,0 +1,436 @@
+
+D'une manière générale il est utile de connaitre un minimum du contexte des données que l'on souhaite consulter ou mettre à jour. La liste de mes tables, lesnoms 
+et types des colonnes d'une de mes tables, les tables accessibles, etc.
+Ces informations qui concernent les informations, sont appelées méta données (ou META DATA).
+
+Le dictionnaire de données (DD) est le référentiel unique qui décrit tous les objets physiques et logiques d'une base de données Oracle. 
+Il est accédé par les utilisateurs DBA ou non.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+1. Connecter en tant que « System ». Lister le catalogue « DICT ». Il contient combien d’instances ? Donner sa structure ?
+
+connect system/psw
+Describe DICT;  -- Toutes les vues du dictionnaire ,pour le user ou le DBA : Nom de la vue et sa description
+select * from dict;
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+2. Donner   le   rôle   et   la   structure   des   tables   (ou   vues)   suivantes   : ALL_TAB_COLUMNS,  USER_USERS, ALL_CONSTRAINTS et USER_TAB_PRIVS.
+
+--A.« ALL_TAB_COLUMNS » : Liste des colonnes des tables, vues et clusters de la base accessible par un utilisateur
+
+describe ALL_TAB_COLUMNS;
+
+ 
+select COMMENTS from DICT where TABLE_NAME='ALL_TAB_COLUMNS';
+
+
+--B " USER_USERS" : Caractéristiques générales du user : Nom, tablespace par defaut, tablespace temporaire
+
+describe USER_USERS;
+
+select COMMENTS from DICT where TABLE_NAME='USER_USERS';
+
+--C "ALL_CONSTRAINTS" : Les contraintes : Nom, type, table d’accueil, statut
+
+describe ALL_CONSTRAINTS;
+
+select COMMENTS from DICT where TABLE_NAME='ALL_CONSTRAINTS';
+
+--D "USER_TAB_PRIVS" : Affiche la lise des privilèges de l'utilisateur connecté
+
+describe USER_TAB_PRIVS;
+
+select COMMENTS from DICT where TABLE_NAME='USER_TAB_PRIVS'; 
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+3.Trouver le nom d’utilisateur avec lequel vous êtes connecté ?
+
+connect dbagymnase/psw
+
+select USERNAME from USER_USERS;
+
+essayez de vous connectez en tant que système et testez:
+
+connect system/psw
+
+select USERNAME from USER_USERS;
+
+------
+
+select USERNAME from DBA_USERS;
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+4.	Comparer la structure et le contenu des tables ALL_TAB_COLUMNS et USER_TAB_COLUMNS ?
+
+connect dbagymnase/psw
+
+select COMMENTS from DICT where table_name='USER_TAB_COLUMNS'; 
+
+select COMMENTS from DICT where table_name='ALL_TAB_COLUMNS';
+
+desc ALL_TAB_COLUMNS; affiche les colonnes des tables accessible par un utilisater
+
+desc USER_TAB_COLUMNS; (la différence c'est que dans user_tab_columns il n'y a pas owner vu qu'il affiche les colonnes des tables de l'utilisateur connecté)
+
+
+select * from USER_TAB_COLUMNS;  affiche les colonnes des tables de l'utilisateur connecté
+
+select TABLE_NAME, COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS; 
+
+select * from ALL_TAB_COLUMNS; -- affiche toutes les colonnes de toutes les tables auquelles a accès dbagymnase, on va éviter de faire select * sur ALL_TAB_COLUMNS , 
+l'affichage est beaucoup trop long, j'ai du l'arrêter
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+quelques affichage sur ALL_TAB_COLUMNS
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+quelques exemples de ce que contient ALL_TAB_COLUMNS pour comprendre pourquoi elle prend du temps pour afficher, on connecté en tant que dbagymnase
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='ALL_OBJECTS';
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='USER_OBJECTS';
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='USER_TAB_COLUMNS';
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='ALL_TAB_COLUMNS';
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='DBA_USERS'; -- celle ci marche
+
+desc dba_users; ---celle ci ne marche pas
+select username, created from dba_users; --- celle là non plus
+
+connect system/psw
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='DBA_USERS';
+desc dba_users; 
+select username, created from dba_users;
+
+connect dbagymnase/psw
+
+select TABLE_NAME, COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS where table_name='SPORTS'; --affiche les colonnes de la table SPORTS de l'utilisateur connecté: dbagymnase
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='SPORTS'; (pour ma part comme mon utilisateur dbagymnase a tous les privilèges et j'ai créé d'autres
+utilisateurs: dbagymnase3 et dbagymnasea avec les mêmes noms de tables il a donc accès à toutes colonnes des tables des autres utilisateurs qui se nomment SPORTS par exemple, il affiche alors 
+les colonnes de chaque table sports de chaque utilisateur):
+
+OWNER                          TABLE_NAME                     COLUMN_NAME                    DATA_TYPE
+------------------------------ ------------------------------ ------------------------------ ----------------------------------------------------------------------------------------------------------
+DBAGYMNASE3                    SPORTS                         IDSPORT                        NUMBER
+DBAGYMNASE3                    SPORTS                         LIBELLE                        VARCHAR2
+DBAGYMNASE                     SPORTS                         IDSPORT                        NUMBER
+DBAGYMNASE                     SPORTS                         LIBELLE                        VARCHAR2
+DBAGYMNASEA                    SPORTS                         IDSPORT                        NUMBER
+DBAGYMNASEA                    SPORTS                         LIBELLE                        VARCHAR2
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='WILAYA'; (ce n'est que avec dbagymnage que j'ai créé le nom de table: wilaya):
+
+OWNER                          TABLE_NAME                     COLUMN_NAME                    DATA_TYPE
+------------------------------ ------------------------------ ------------------------------ ----------------------------------------------------------------------------------------------------------
+DBAGYMNASE                     WILAYA                         CODEWILAYA                     VARCHAR2
+DBAGYMNASE                     WILAYA                         NOMWILAYA                      VARCHAR2
+DBAGYMNASE                     WILAYA                         REGION                         VARCHAR2
+
+
+(si j'essaye avec) connect dbagymnase3/psw
+
+select TABLE_NAME, COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS where table_name='SPORTS';
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='SPORTS';
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='WILAYA';
+
+select * from dbagymnase.wilaya;
+
+-------------------------------------------
+
+connect dbagymnase/psw
+
+grant create session to admingym;
+
+grant select on sports to admingym;
+
+connect admingym/psw
+
+select TABLE_NAME, COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS where table_name='TEST';
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='TEST';
+
+select * from sports;
+
+select * from dbagymnase.sports;
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name=upper('sports'); --celle ci marche après avoir donné le grant select on sports
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='USER_TAB_COLUMNS';
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS; --- même ici en tant admingym j'ai du interrompre l'affichage
+
+select TABLE_NAME, COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS; -- affiche les colonnes de 
+
+select OWNER, TABLE_NAME, COLUMN_NAME, DATA_TYPE from ALL_TAB_COLUMNS where table_name='DBA_USERS'; -- ne marche pas
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+5. Vérifiez que les tables du TP1 ont été réellement créées ? Donner toutes les informations sur ces tables ?
+
+-affiche la liste des tables de l'utilisateur connecté
+connect dbagymnase/psw
+
+select COMMENTS from DICT where table_name='USER_TABLES'; 
+
+describe USER_TABLES; -
+
+select * from USER_TABLES; 
+
+select TABLE_NAME, TABLESPACE_NAME from USER_TABLES;
+
+select TABLE_NAME from USER_TABLES;
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+6. Lister les tables de l’utilisateur « system » et celles de l’utilisateur DBAGYMNASE (l’utilisateur de TP1).
+
+connect system/psw
+
+select TABLE_NAME from USER_TABLES;
+
+desc dba_tables;
+
+select TABLE_NAME from dba_tables where OWNER='SYSTEM';
+
+select TABLE_NAME from dba_tables where OWNER='DBAGYMNASE';
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+7. Donner la description des attributs des tables SPORTIFS et SEANCES (Exploiter la table USER_TAB_COLUMNS).
+
+connect dbagymnase/psw 
+
+select TABLE_NAME, COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS where table_name='SPORTS';
+
+select TABLE_NAME, COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS where table_name='SEANCES';
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+8. Comment peut-on vérifie qu’il y a une référence de clé étrangère entre les tables SPORTS et JOUER? 
+
+connect system
+desc dba_constraints; -- describes all constraint definitions on all tables in the database
+
+select CONSTRAINT_NAME, CONSTRAINT_TYPE,  R_CONSTRAINT_NAME from dba_constraints where TABLE_NAME='JOUER' and OWNER='DBAGYMNASE';
+
+connect dbagymnase/psw
+
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, R_CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE TABLE_NAME='JOUER';
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+user_cons_columns
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+select COMMENTS from DICT where table_name=upper('user_cons_columns'); -- décrit les colonnes de l'utilisateur connecté qui sont spécifiés dans la définition d'une contrainte
+
+desc user_cons_columns;
+
+select CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME from user_cons_columns where table_name='SPORTS';
+
+select CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME from user_cons_columns where table_name='JOUER';
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+9. Donner toutes les contraintes créées lors du TP1 et les informations qui les caractérisent (Exploitez la table USER_CONSTRAINTS)
+
+select COMMENTS from DICT where table_name='USER_CONSTRAINTS'; 
+
+desc user_constraints; -- décrit toutes les contraintes de l'utilisateur connecté
+
+select * from USER_CONSTRAINTS; 
+
+select OWNER, CONSTRAINT_NAME, TABLE_NAME, CONSTRAINT_TYPE, STATUS from user_constraints; 
+
+Type of constraint definition:
+
+C (check constraint on a table)
+P (primary key)
+U (unique key)
+R (referential integrity)
+V (with check option, on a view)
+O (with read only, on a view)
+
+
+select CONSTRAINT_NAME, STATUS from user_constraints where table_name=upper('jouer');
+select CONSTRAINT_NAME, STATUS from user_constraints where table_name=upper('jouer') and CONSTRAINT_TYPE='R';
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+10.	Retrouver toutes les informations permettant de recréer la table SEANCES. 
+
+select CONSTRAINT_NAME, TABLE_NAME, COLUMN_NAME from user_cons_columns where table_name='SEANCES';
+
+SELECT CONSTRAINT_NAME, CONSTRAINT_TYPE, R_CONSTRAINT_NAME FROM USER_CONSTRAINTS WHERE TABLE_NAME='SEANCES';
+
+select COLUMN_NAME, DATA_TYPE from USER_TAB_COLUMNS where table_name='SEANCES';
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+11.	Trouver tous les privilèges accordés à ADMINGYM
+
+comme on les a supprimé , on les recrée
+connect dbagymnase/psw
+on donne des privilèges système à admingym
+grant create table, create view, create user to ADMINGYM;
+
+on donne un privilège objet à admingym
+grant select on GYMNASES to ADMINGYM;
+
+-- affichage privilèges système:
+
+Si on est connecté en tant que system
+
+connect system/psw
+
+select * from DBA_SYS_PRIVS where GRANTEE='ADMINGYM';
+
+-- sinon si on est connecté en tant que ADMINGYM
+
+connect admingym/psw
+
+select * from USER_SYS_PRIVS;
+select privilege, admin_option from user_sys_privs;
+
+--- privilèges objets:
+
+Si on est connecté en tant que system
+
+select grantee, owner, table_name, privilege, grantable from dba_tab_privs where grantee='ADMINGYM';
+
+-- sinon si on est connecté en tant que ADMINGYM
+
+connect admingym/psw
+
+select * from user_tab_privs;
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+12.	Trouver les rôles donnés à l’utilisateur ADMINGYM
+
+connect dbagymnase/psw
+grant create table to GESTIONNAIRE_DES_GYMNASES; -- on donne un privilège système à ce role pour pouvoir l'afficher
+
+connect system/psw
+
+select * from DBA_ROLE_PRIVS where GRANTEE='ADMINGYM';
+
+-- si on veut afficher les privilèges objets du role GESTIONNAIRE_DES_GYMNASES
+
+select privilege, table_name from dba_tab_privs where grantee='GESTIONNAIRE_DES_GYMNASES';
+
+-- si on veut afficher les privilèges système du role GESTIONNAIRE_DES_GYMNASES
+
+select * from dba_sys_privs where grantee='GESTIONNAIRE_DES_GYMNASES';
+
+--afficher le role quand on est connecté en tant que admingym
+
+connect admingym/psw
+
+SELECT * FROM user_role_privs;
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+13. Trouver tous les objets appartenant à ADMINGYM
+
+connect admingym/psw
+
+select * from user_objects;
+
+select object_name, object_type from user_objects;
+
+connect system/psw
+
+select object_name, object_type from dba_objects where owner='ADMINGYM';
+
+---------------------------------------------------------------------------------------------------------------------------------------
+
+14.	L’administrateur cherche le propriétaire de la table SPORTIFS, comment il pourra le trouver ?
+
+connect system/psw
+
+desc dba_tables
+
+select owner from dba_tables where table_name='SPORTIFS';
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+15.	Donner la taille en Ko de la table SPORTIFS
+
+connect dbagymnase/psw
+
+desc user_segments; -- USER_SEGMENTS describes the storage allocated for the segments owned by the current user's objects.
+
+-- BYTES Size in bytes, of the segment
+
+-- BLOCKS Size, in Oracle blocks, of the segment
+
+select BYTES/1024, BLOCKS, segment_type from user_segments where segment_name = 'SPORTIFS';
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+16.
+
+créer un nouvel utilisateur comme dans le tp1, donner lui tous les privilèges ensuite connectez vous avec 
+cet utilisateur que vous venez de créer 
+
+Avant de créer les tables du tp1 vérifier ce qu'il y a dans le Dictionnaire.
+
+
+select TABLE_NAME  from USER_TABLES;
+
+select COLUMN_NAME from USER_TAB_COLUMNS;
+
+select CONSTRAINT_NAME  from USER_CONSTRAINTS;
+
+
+Créez les tables  
+
+vérifiez ce qu'il y a dans le dictionnaire en executant les requêtes précédentes:
+
+select TABLE_NAME  from USER_TABLES;
+
+select COLUMN_NAME from USER_TAB_COLUMNS;
+
+select CONSTRAINT_NAME  from USER_CONSTRAINTS;
+
+
+vérifiez ensuite l’effet de Alter table sur le dictionnaire:
+
+
+
+//arrive a la question 10
+
+
+modifier le nom d'un attribut et ajouter un attribut comme dans le tp1
+ensuite vérifiez si le changement s'est produit dans le dictionnaire :
+
+select column_name from user_tab_columns;
+
+et pour finir ajoutez une contrainte chek comme dans le tp1 et vérifier encore une fois le dictionnaire
+
+select CONSTRAINT_NAME from USER_CONSTRAINTS;
+
+
+----------------------------------------------------------------------------------
+Lien du catalogue oracle:
+
+https://docs.oracle.com/pls/db92/db92.catalog_views?remark=homepage#index-USE
+
+--------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+

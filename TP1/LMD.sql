@@ -1,0 +1,44 @@
+
+--12--
+UPDATE SPORTIFS  SET IDSPORTIFCONSEILLER = (SELECT IDSPORTIF FROM SPORTIFS WHERE NOM='CHAADI' AND PRENOM = 'Mourad')
+WHERE NOM = 'LACHEMI' AND PRENOM  = 'Bouzid'  ;
+
+--13
+
+ALTER TABLE SPORTS DISABLE CONSTRAINT CK_SPORTS_LIBELLE;
+
+
+INSERT INTO SPORTS VALUES(10,'Natation');
+INSERT INTO SPORTS VALUES(11,'Golf');
+
+--on fait le exceptions quand on reactive la contrainte!
+alter table sports enable constraint CK_SPORTS_LIBELLE exceptions into tableerreurs;
+
+
+--14 supprimer les gymnases dont la superficie est supérieur a 400m²
+DELETE FROM GYMNASES WHERE SURFACE>400;
+
+--15 
+SELECT IDSPORTIF,NOM,PRENOM FROM SPORTIFS WHERE AGE BETWEEN 20 AND 30;
+
+--16 
+SELECT IDSPORTIF,NOM,PRENOM FROM SPORTIFS WHERE IDSPORTIF IN (SELECT DISTINCT IDSPORTIFCONSEILLER FROM SPORTIFS );
+
+
+--17 entraineures qui n'entrainent que du hand ball ou du basket ball
+SELECT DISTINCT IDSPORTIFENTRAINEUR FROM Entrainer e,SPORTS s WHERE (
+    s.LIBELLE='basket ball' or s.libelle='hand ball'
+) AND e.IDSPORTS = s.IDSPORTS 
+MINUS
+SELECT distinct IDSPORTIFENTRAINEUR FROM
+Entrainer ee, sports, ss WHERE ss.libelle not in ('basket ball','hand ball')
+AND ee.idsport==ss.idsport;
+
+--18
+SELECT * FROM SPORTIFS WHERE AGE IN (SELECT MIN(AGE) FROM SPORTIFS);
+
+--19
+
+SELECT COUNT(SURFACE)/COUNT(*) ,VILLE FROM GYMNASES GROUP BY (VILLE);
+
+

@@ -1,0 +1,198 @@
+SQL> select nom, age from Sportifs;
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+BOUTAHAR                                                   30                   
+BOUROUBI                                                   28                   
+BOUZIDI                                                    25                   
+LACHEMI                                                    32                   
+AAKOUB                                                     22                   
+ABBAS                                                      30                   
+HADJ                                                       25                   
+HAMADI                                                     30                   
+ABDELMOUMEN                                                23                   
+ABAD                                                       23                   
+ABAYAHIA                                                   24                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+ABBACI                                                     24                   
+ABBACI                                                     22                   
+ABDELOUAHAB                                                24                   
+ABDEMEZIANE                                                25                   
+BENOUADAH                                                  24                   
+ACHAIBOU                                                   22                   
+HOSNI                                                      25                   
+ABERKANE                                                   25                   
+AZOUG                                                      25                   
+BABACI                                                     22                   
+BAKIR                                                      25                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+BEHADI                                                     24                   
+AMARA                                                      23                   
+AROUEL                                                     23                   
+BAALI                                                      23                   
+BADI                                                       23                   
+RABAHI                                                     40                   
+ROUSSELI                                                   22                   
+CHIKHI                                                     24                   
+SETIHA                                                     22                   
+COTERI                                                     23                   
+RAMELI                                                     23                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+LEHIRACHE                                                  24                   
+TERIKI                                                     24                   
+DJELOUDANE                                                 28                   
+MESSOUNI                                                   24                   
+MORELI                                                     24                   
+FATAHI                                                     23                   
+DELHOUME                                                   22                   
+BEHADI                                                     23                   
+MATI                                                       23                   
+ADIBOU                                                     28                   
+LAZARI                                                     25                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+CHALI                                                      25                   
+DOUDOU                                                     24                   
+Grine                                                      25                   
+HEDDI                                                      23                   
+JADI                                                       24                   
+KALI                                                       22                   
+LAJEL                                                      24                   
+DANDOUR                                                    22                   
+DEMMERA                                                    22                   
+ELKABBADJ                                                  23                   
+FEROLI                                                     23                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+GUERRAOUI                                                  25                   
+BOUACHA                                                    25                   
+GUITENI                                                    23                   
+KACI                                                       23                   
+TIZEGHAT                                                   32                   
+LAZARRI                                                    27                   
+BAZOUDI                                                    32                   
+AMANI                                                      30                   
+LANORI                                                     30                   
+CHAADI                                                     30                   
+DANDANE                                                    30                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+FATTIMI                                                    26                   
+REGHI                                                      30                   
+MARADI                                                     25                   
+BELMADI                                                    30                   
+DELAROCHI                                                  30                   
+MARTALI                                                    22                   
+DALLIMI                                                    30                   
+OUBACHA                                                    30                   
+SAADI                                                      39                   
+HALGATTI                                                   30                   
+HIDDOUCI                                                   30                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+CHAOUAH                                                    30                   
+HANDI                                                      30                   
+HOCHET                                                     30                   
+DROULLONI                                                  30                   
+HOULEMI                                                    40                   
+LOUATI                                                     30                   
+SALLADj                                                    28                   
+HAMARI                                                     30                   
+GALLOTI                                                    30                   
+KASBADJI                                                   30                   
+JENOURI                                                    30                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+RIHABI                                                     30                   
+DERARNI                                                    30                   
+HADJI                                                      22                   
+CAUCHARDI                                                  30                   
+LEROUDI                                                    36                   
+ESTANBOULI                                                 30                   
+JANID                                                      30                   
+BONHOMMANE                                                 30                   
+RIADI                                                      30                   
+BATERAOUI                                                  30                   
+BONETI                                                     32                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+LESOIFI                                                    30                   
+SWAMI                                                      30                   
+DAOUDI                                                     30                   
+LAAMOURI                                                   30                   
+SEHIER                                                     30                   
+STITOUAH                                                   30                   
+BAADI                                                      30                   
+BOURAS                                                     30                   
+AIT AMARA                                                  30                   
+SAGOU                                                      30                   
+ROULLADI                                                   30                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+BOUTINE                                                    30                   
+LOUATI                                                     30                   
+AID                                                        30                   
+MICHALIKH                                                  22                   
+LEMOUSSI                                                   30                   
+BELIFA                                                     30                   
+FERRIRA                                                    30                   
+IGHOLI                                                     30                   
+GUEMEZ                                                     30                   
+LECOM                                                      30                   
+HOUAT                                                      30                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+BEQUETA                                                    30                   
+RATENI                                                     30                   
+TOUAT                                                      30                   
+JALONI                                                     30                   
+DEBOUBA                                                    30                   
+GASTAB                                                     30                   
+GIRONI                                                     30                   
+DABONI                                                     30                   
+LACHOUBI                                                   30                   
+GALLOI                                                     30                   
+DORONI                                                     30                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+LENOUCHI                                                   30                   
+LERICHE                                                    30                   
+MANSOUR                                                    30                   
+LABOULAIS                                                  26                   
+DOUDOU                                                     26                   
+MAALEM                                                     26                   
+BESNARD                                                    26                   
+BELHAMID                                                   26                   
+BOUAAZA                                                    26                   
+CORCHI                                                     26                   
+BELAID                                                     26                   
+
+NOM                                                       AGE                   
+-------------------------------------------------- ----------                   
+GASMI                                                      26                   
+LAAMARA                                                    25                   
+DABOUB                                                     25                   
+HASSINI                                                    25                   
+KALOUNE                                                    27                   
+BELHAOUA                                                   27                   
+BELAID                                                     25                   
+HENDI                                                      25                   
+
+151 rows selected.
+
+SQL> spool off
